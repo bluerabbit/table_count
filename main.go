@@ -11,9 +11,9 @@ import (
 )
 
 func checkIDColumn(db *sql.DB, tableName string) bool {
-	var columnName, dataType, columnKey string
-	query := fmt.Sprintf("SELECT COLUMN_NAME, DATA_TYPE, COLUMN_KEY FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '%s' AND COLUMN_NAME = 'id'", tableName)
-	err := db.QueryRow(query).Scan(&columnName, &dataType, &columnKey)
+	var dataType, columnKey string
+	query := fmt.Sprintf("SELECT DATA_TYPE, COLUMN_KEY FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '%s' AND COLUMN_NAME = 'id'", tableName)
+	err := db.QueryRow(query).Scan(&dataType, &columnKey)
 	if err != nil {
 		log.Fatalf("Failed to get column information for 'id' in table %s: %v", tableName, err)
 	}
