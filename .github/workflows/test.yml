@@ -34,7 +34,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y mysql-client
-          mysql -h 127.0.0.1 -uroot -proot -e "CREATE DATABASE table_count_test;"
       - name: Test with MySQL
         env:
           MYSQL_DSN: root:root@tcp(127.0.0.1:3306)/table_count_test
