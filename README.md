@@ -12,7 +12,7 @@ This utility calculates the total number of records in a specified MySQL table. 
 Instead of directly executing `SELECT COUNT(id) FROM table_name` on tables with large amounts of data, this tool optimizes performance by employing the following strategy:
 
 - It confirms that the table's `id` column is a primary key and is numeric.
-- The tool uses a user-specified step size (or the default of 10000) to divide the ID range into segments.
+- The tool uses a user-specified step size (or the default of 100000) to divide the ID range into segments.
 - For each ID range, it executes a query in the format `SELECT COUNT(id) FROM table_name WHERE id BETWEEN x AND y` to get the partial counts.
 - It sums up the counts from each range to determine the total number of records in the table.
 
