@@ -89,7 +89,7 @@ func TestGetMaxID(t *testing.T) {
 	}
 }
 
-func TestGetTotalCount(t *testing.T) {
+func TestGetTotalCountParallel(t *testing.T) {
 	dsn := os.Getenv("MYSQL_DSN")
 
 	db, err := sql.Open("mysql", dsn)
@@ -110,7 +110,7 @@ func TestGetTotalCount(t *testing.T) {
 
 	step := 2
 	expectedTotalCount := 3
-	totalCount, err := getTotalCount(db, "users", 3, step)
+	totalCount, err := getTotalCountParallel(db, "users", 3, step, 2)
 	if err != nil {
 		t.Fatalf("getTotalCount failed: %v", err)
 	}
