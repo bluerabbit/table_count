@@ -40,7 +40,7 @@ func getMaxID(db *sql.DB, tableName string) int {
 func getTotalCount(db *sql.DB, tableName string, start, end int) (int, error) {
 	var count int
 	query := fmt.Sprintf("SELECT COUNT(id) FROM %s WHERE id BETWEEN %d AND %d", tableName, start, end)
-	log.Println("Executing query:", query)
+	//log.Println("Executing query:", query)
 	err := db.QueryRow(query).Scan(&count)
 	if err != nil {
 		return 0, fmt.Errorf("error counting %s in range %d - %d: %v", tableName, start, end, err)
