@@ -37,9 +37,9 @@ func getMaxID(db *sql.DB, tableName string) int {
 	return maxID
 }
 
-func getTotalCount(db *sql.DB, tableName string, start, end int) (int, error) {
+func getTotalCount(db *sql.DB, tableName string, start, end int, where string) (int, error) {
 	var count int
-	query := fmt.Sprintf("SELECT COUNT(id) FROM %s WHERE id BETWEEN %d AND %d", tableName, start, end)
+	query := fmt.Sprintf("SELECT COUNT(id) FROM %s WHERE id BETWEEN %d AND %d %s", tableName, start, end, where)
 	//log.Println("Executing query:", query)
 	err := db.QueryRow(query).Scan(&count)
 	if err != nil {
@@ -47,7 +47,7 @@ func getTotalCount(db *sql.DB, tableName string, start, end int) (int, error) {
 	}
 	return count, nil
 }
-func getTotalCountParallel(db *sql.DB, tableName string, maxID, step int, concurrency int) (int, error) {
+func getTotalCountParallel(db *sql.DB, tableName string, maxID, step int, where string, concurrency int) (int, error) {
 	var wg sync.WaitGroup
 	results := make(chan int)
 
@@ -63,7 +63,7 @@ func getTotalCountParallel(db *sql.DB, tableName string, maxID, step int, concur
 			}
 			defer sem.Release(1)
 
-			count, err := getTotalCount(db, tableName, start, end)
+			count, err := getTotalCount(db, tableName, start, end, where)
 			if err != nil {
 				log.Printf("Error counting %s in range %d - %d: %v", tableName, start, end, err)
 				return
@@ -124,6 +124,8 @@ func main() {
 		}
 	}
 
+	whereEnv := os.Getenv("WHERE")
+
 	db, err := sql.Open("mysql", databaseURL)
 	if err != nil {
 		log.Fatal(err)
@@ -136,11 +138,11 @@ func main() {
 
 	maxID := getMaxID(db, tableName)
 
-	totalCount, err := getTotalCountParallel(db, tableName, maxID, step, concurrency)
+	totalCount, err := getTotalCountParallel(db, tableName, maxID, step, whereEnv, concurrency)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("Total number of records in the %s table: %d\n", tableName, totalCount)
+	log.Printf("Total number of records in the %s table: %d\n", tableName, totalCount)
 	log.Printf("Total running time: %s\n", time.Since(startTime))
 }
