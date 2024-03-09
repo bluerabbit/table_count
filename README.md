@@ -47,6 +47,15 @@ This approach allows for efficient calculation of total records even in large ta
 
    Replace `<table_name>` with the name of the table you want to count.
 
+
+5. (Optional) Set the `WHERE` environment variable to specify additional conditions for the SQL query. The value should be a valid SQL condition. For example, to count only the records where the `name` column contains 'Alice', you would set the `WHERE` environment variable like this:
+
+   ```
+   export WHERE="AND name LIKE '%Alice%'"
+   ```
+
+Note: The `WHERE` environment variable is appended directly to the SQL query, so it should start with 'AND' or 'OR' followed by a space. Be careful to write a valid SQL condition.
+
 ## Notes
 
 - This utility works only with tables where the `id` column is a numeric primary key.
