@@ -110,7 +110,7 @@ func TestGetTotalCountParallel(t *testing.T) {
 
 	step := 2
 	expectedTotalCount := 3
-	totalCount, err := getTotalCountParallel(db, "users", 3, step, 2)
+	totalCount, err := getTotalCountParallel(db, "users", 3, step, "", 2)
 	if err != nil {
 		t.Fatalf("getTotalCount failed: %v", err)
 	}
