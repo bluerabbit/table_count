@@ -33,8 +33,13 @@ This approach allows for efficient calculation of total records even in large ta
    ```
    export STEP_SIZE=5000
    ```
+3. (Optional) Set the `CONCURRENCY` environment variable to specify the concurrency level for goroutines. The default value is `3`.
 
-3. Execute the program to count the total records in the table:
+   ```
+   export CONCURRENCY=5
+   ```
+
+4. Execute the program to count the total records in the table:
 
    ```
    go run main.go <table_name>
